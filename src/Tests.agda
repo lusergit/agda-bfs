@@ -1,5 +1,5 @@
 module Tests where
-  open import Djikstra
+  open import Bfs
   open import UndirGraph
   open import Matrix
   open import Presence
@@ -37,5 +37,19 @@ module Tests where
     [])
   _ = refl
 
+  -- bfs-traverse returns a prefix visit of the binary tree (composes
+  -- the minimal spanning tree, which is exactly the same tree)
+  _ : (bfs-traverse tree1 (Fin.zero {6})) ≡
+    (zero ∷
+    suc zero ∷
+    suc (suc zero) ∷
+    suc (suc (suc zero)) ∷
+    suc (suc (suc (suc zero))) ∷
+    suc (suc (suc (suc (suc zero)))) ∷
+    suc (suc (suc (suc (suc (suc zero))))) ∷ [])
+  _ = refl
+
+  
+  -- BFS returns the minimal path between two nodes
   _ : (bfs tree1 (Fin.zero {6}) (Fin.suc (Fin.suc (Fin.suc (Fin.suc (Fin.suc (Fin.suc (Fin.zero {0})))))))) ≡ (0 ∷ 2 ∷ 6 ∷ [])
   _ = refl

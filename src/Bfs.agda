@@ -1,9 +1,9 @@
 -- Djikstra's algorithm
-module Djikstra where
+module Bfs where
   open import UndirGraph
   open import Matrix
   import Data.Vec as V
-  open V using (Vec; _[_]≔_)
+  open V using (Vec; _[_]≔_; []; _∷_)
   open import Presence
   open import Data.Fin.Base using (Fin; zero; suc; fromℕ; toℕ; inject≤; fromℕ<)
   open import Data.List
@@ -81,11 +81,11 @@ module Djikstra where
     ... | [] = L
     ... | x ∷ xs with filter-list (neighbors (row G x)) σ
     ... | [] = bfs-traverse' G xs (L ++ [ x ]) σ
-    ... | y ∷ ys = bfs-traverse' G (xs ++ ys) (L ++ [ x ]) (σ ++ ys)
+    ... | ys = bfs-traverse' G (xs ++ ys) (L ++ [ x ]) (σ ++ ys)
 
   constvec : {A : Set} → (n : ℕ) → (val : A) → Vec A n
-  constvec ℕ.zero val = V.[]
-  constvec (ℕ.suc n) val = val V.∷ (constvec n val)
+  constvec ℕ.zero val = []
+  constvec (ℕ.suc n) val = val ∷ (constvec n val)
 
   -- bfs itself: Given a graph, a starting index and a finish index,
   -- return the shortest path (a list of node indexes) between the
@@ -101,8 +101,7 @@ module Djikstra where
         → List (indx n)
         → Vec (indx n) (ℕ.suc n)
       update-prevs {n} ρ x [] = ρ
-      update-prevs {n} ρ x (y ∷ ys) = let i = fromℕ< {toℕ x} {ℕ.suc n} (lemma3 (ℕ.suc n) x)
-                                      in update-prevs (ρ [ y ]≔ i) x ys
+      update-prevs {n} ρ x (y ∷ ys) = update-prevs (ρ [ y ]≔ fromℕ< {toℕ x} {ℕ.suc n} (lemma3 (ℕ.suc n) x)) x ys
         
       bfs' : ∀ {n}
         → graph[ ℕ.suc n ]
