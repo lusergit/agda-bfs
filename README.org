@@ -1,6 +1,6 @@
 #+title: BFS graph traversal in agda
 #+author: Luca Zaninotto -- 2057074
-* BFS graph traversal in agda
+* The project
   This project is an implementation and correctness proof of a bfs
   traversal implementation in an undirected graph. The claim is that
   given a graph and two nodes (start and finish) the algorithm returns
