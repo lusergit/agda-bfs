@@ -1,0 +1,19 @@
+#+title: BFS graph traversal in agda
+#+author: Luca Zaninotto -- 2057074
+* BFS graph traversal in agda
+  This project is an implementation and correctness proof of a bfs
+  traversal implementation in an undirected graph. The claim is that
+  given a graph and two nodes (start and finish) the algorithm returns
+  the shortest path between them (minimizes the number of hops between
+  the two).
+** Testing
+   Testing can be done by writting a test (in ~test.agda~) and then
+   #+begin_src sh
+     agda src/Tests.agda
+   #+end_src
+   (some examples are already included)
+** Verification
+   Proving the algorithm correctness consists in
+   #+begin_src sh
+     agda src/Verification.agda
+   #+end_src
