@@ -27,7 +27,7 @@ module Djikstra where
   -- in 1 hop)
   {-# TERMINATING #-}
   neighbors : ∀ {n : ℕ} → Vec 𝔹 (ℕ.suc n) → List (indx n)
-  neighbors {n} v = neighbors' v (fromℕ< {n} {ℕ.suc n} (lemma1 n)) []
+  neighbors {n} v = neighbors' v (fromℕ n) []
     where
     reduce : ∀ {n : ℕ} → indx n → indx n
     reduce zero = zero
@@ -50,7 +50,7 @@ module Djikstra where
 
   lookup-l : ∀ {n : ℕ} → indx n → List (indx n) → 𝔹
   lookup-l x [] = O
-  lookup-l x (y ∷ ys) with toℕ x ≡? toℕ y
+  lookup-l x (y ∷ ys) with (toℕ x) ≡? (toℕ y)
   ... | I = I
   ... | O = lookup-l x ys
 
@@ -77,7 +77,7 @@ module Djikstra where
       → List (indx n)
       → List (indx n)
       → List (indx n)
-    bfs-traverse' G L Q σ with Q
+    bfs-traverse' G Q L σ with Q
     ... | [] = L
     ... | x ∷ xs with filter-list (neighbors (row G x)) σ
     ... | [] = bfs-traverse' G xs (L ++ [ x ]) σ
