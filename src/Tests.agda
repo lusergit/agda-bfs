@@ -1,5 +1,5 @@
 module Tests where
-  open import Bfs
+  open import Bfs using (neighbors; filter-list; bfs-traverse; bfs; bfs')
   open import UndirGraph
   open import Matrix
   open import Presence
@@ -27,29 +27,39 @@ module Tests where
   adj-l-1 = V.head (V.tail tree1)
 
   -- neighbors of the first node are 1 and 2
-  _ : (neighbors adj-l-0) ≡ ((Fin.suc (Fin.zero {5})) ∷ (Fin.suc (Fin.suc (Fin.zero {4}))) ∷ [])
+  _ : (neighbors adj-l-0) ≡ ((suc (zero {5})) ∷ (suc (suc (zero {4}))) ∷ [])
   _ = refl
 
   -- filtering 0 from the neighbors of 1 leaves with 3 and 4
-  _ : (filter-list (neighbors adj-l-1) ((Fin.zero {6}) ∷ [])) ≡
-    ((Fin.suc (Fin.suc (Fin.suc (Fin.zero {3})))) ∷
-    (Fin.suc (Fin.suc (Fin.suc (Fin.suc (Fin.zero {2}))))) ∷
+  _ : (filter-list (neighbors adj-l-1) (zero {6} ∷ [])) ≡
+    (suc (suc (suc (zero {3}))) ∷      -- 3
+    suc (suc (suc (suc (zero {2})))) ∷ -- 4
     [])
   _ = refl
 
-  -- bfs-traverse returns a prefix visit of the binary tree (composes
-  -- the minimal spanning tree, which is exactly the same tree)
-  _ : (bfs-traverse tree1 (Fin.zero {6})) ≡
-    (zero ∷
-    suc zero ∷
-    suc (suc zero) ∷
-    suc (suc (suc zero)) ∷
-    suc (suc (suc (suc zero))) ∷
-    suc (suc (suc (suc (suc zero)))) ∷
-    suc (suc (suc (suc (suc (suc zero))))) ∷ [])
+  -- bfs-traverse returns a prefix visit of the binary tree
+  _ : (bfs-traverse tree1 (zero {6})) ≡
+    (zero ∷                                      -- 0
+    suc zero ∷                                   -- 1
+    suc (suc zero) ∷                             -- 2
+    suc (suc (suc zero)) ∷                       -- 3
+    suc (suc (suc (suc zero))) ∷                 -- 4
+    suc (suc (suc (suc (suc zero)))) ∷           -- 5
+    suc (suc (suc (suc (suc (suc zero))))) ∷ []) -- 6
   _ = refl
 
   
   -- BFS returns the minimal path between two nodes
-  _ : (bfs tree1 (Fin.zero {6}) (Fin.suc (Fin.suc (Fin.suc (Fin.suc (Fin.suc (Fin.suc (Fin.zero {0})))))))) ≡ (0 ∷ 2 ∷ 6 ∷ [])
+  _ : (bfs tree1 (zero {6}) (suc (suc (suc (suc (suc (suc (zero {0})))))))) ≡
+    (zero {6} ∷                                        -- 0
+    suc (suc (zero {4})) ∷                             -- 2
+    suc (suc (suc (suc (suc (suc (zero {0})))))) ∷ []) -- 6
   _ = refl
+
+  z : indx 6
+  z = (zero {6})
+
+  sx : indx 6
+  sx = (suc (suc (suc (suc (suc (suc (zero {0})))))))
+
+  -- _ : 
